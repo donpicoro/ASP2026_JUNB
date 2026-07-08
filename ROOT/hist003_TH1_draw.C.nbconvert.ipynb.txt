@@ -1,0 +1,246 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "f8d2c6ea",
+   "metadata": {},
+   "source": [
+    "# hist003_TH1_draw\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "**Author:** Rene Brun, Giacomo Parolini  \n",
+    "<i><small>This notebook tutorial was automatically generated with <a href= \"https://github.com/root-project/root/blob/master/documentation/doxygen/converttonotebook.py\">ROOTBOOK-izer</a> from the macro found in the ROOT repository  on Tuesday, July 07, 2026 at 05:45 AM.</small></i>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3828a1e2",
+   "metadata": {},
+   "source": [
+    "Create and fill the histogram.\n",
+    "See hist002_TH1_fillrandom_userfunc.C for more information about this section."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a99ad6c4",
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "auto *form1 = new TFormula(\"form1\", \"abs(sin(x)/x)\");\n",
+    "double rangeMin = 0.0;\n",
+    "double rangeMax = 10.0;\n",
+    "auto *sqroot = new TF1(\"sqroot\", \"x*gaus(0) + [3]*form1\", rangeMin, rangeMax);\n",
+    "sqroot->SetLineColor(4);\n",
+    "sqroot->SetLineWidth(6);\n",
+    "sqroot->SetParameters(10.0, 4.0, 1.0, 20.0);\n",
+    "\n",
+    "int nBins = 200;\n",
+    "auto *h1d = new TH1D(\"h1d\", \"Test random numbers\", nBins, rangeMin, rangeMax);\n",
+    "\n",
+    "h1d->FillRandom(\"sqroot\", 10000);"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "07e7ae2c",
+   "metadata": {},
+   "source": [
+    "Create a canvas and draw the histogram"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "49be86ba",
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "int topX = 200;\n",
+    "int topY = 10;\n",
+    "int width = 700;\n",
+    "int height = 900;\n",
+    "auto *c1 = new TCanvas(\"c1\", \"The FillRandom example\", topX, topY, width, height);"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0c8d4232",
+   "metadata": {},
+   "source": [
+    "Split the canvas into two sections to plot both the function and the histogram\n",
+    "The TPad's constructor accepts the relative coordinates (0 to 1) of the pad's boundaries"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "76eb6b60",
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "auto *pad1 = new TPad(\"pad1\", \"The pad with the function\", 0.05, 0.50, 0.95, 0.95);\n",
+    "auto *pad2 = new TPad(\"pad2\", \"The pad with the histogram\", 0.05, 0.05, 0.95, 0.45);"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e07a501d",
+   "metadata": {},
+   "source": [
+    "Draw the two pads"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "15afde75",
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "pad1->Draw();\n",
+    "pad2->Draw();"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "777f3cdd",
+   "metadata": {},
+   "source": [
+    "Select pad1 to draw the next objects into"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0cc3c7c9",
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "pad1->cd();\n",
+    "pad1->SetGridx();\n",
+    "pad1->SetGridy();\n",
+    "pad1->GetFrame()->SetBorderMode(-1);\n",
+    "pad1->GetFrame()->SetBorderSize(5);"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d1bef2c6",
+   "metadata": {},
+   "source": [
+    "Draw the function in pad1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9999299b",
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "sqroot->Draw();"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "aea03882",
+   "metadata": {},
+   "source": [
+    "Add a label to the function.\n",
+    "TPaveLabel's constructor accepts the pixel coordinates and the label string."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "15cb8e47",
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "auto *lfunction = new TPaveLabel(5, 39, 9.8, 46, \"The sqroot function\");\n",
+    "lfunction->Draw();\n",
+    "c1->Update();"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f4ecd5b9",
+   "metadata": {},
+   "source": [
+    "Select pad2 to draw the next objects into"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "46b5ed23",
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "pad2->cd();\n",
+    "pad2->GetFrame()->SetBorderMode(-1);\n",
+    "pad2->GetFrame()->SetBorderSize(5);\n",
+    "\n",
+    "h1d->SetFillColor(45);\n",
+    "h1d->Draw();\n",
+    "c1->Update();"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b9ed7125",
+   "metadata": {},
+   "source": [
+    "Draw all canvases "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f0f7d15f",
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "gROOT->GetListOfCanvases()->Draw()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "ROOT C++",
+   "language": "c++",
+   "name": "root"
+  },
+  "language_info": {
+   "codemirror_mode": "text/x-c++src",
+   "file_extension": ".C",
+   "mimetype": " text/x-c++src",
+   "name": "c++"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

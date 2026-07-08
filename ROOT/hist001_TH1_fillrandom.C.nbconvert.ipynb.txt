@@ -1,0 +1,143 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "984dc9ee",
+   "metadata": {},
+   "source": [
+    "# hist001_TH1_fillrandom\n",
+    "Fill a 1D histogram with random values using predefined functions.\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "**Author:** Giacomo Parolini  \n",
+    "<i><small>This notebook tutorial was automatically generated with <a href= \"https://github.com/root-project/root/blob/master/documentation/doxygen/converttonotebook.py\">ROOTBOOK-izer</a> from the macro found in the ROOT repository  on Tuesday, July 07, 2026 at 05:40 AM.</small></i>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d544d072",
+   "metadata": {},
+   "source": [
+    "Create a one dimensional histogram and fill it with a gaussian distribution"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "f44ae30c",
+   "metadata": {
+    "collapsed": false,
+    "execution": {
+     "iopub.execute_input": "2026-07-07T03:40:16.087047Z",
+     "iopub.status.busy": "2026-07-07T03:40:16.086935Z",
+     "iopub.status.idle": "2026-07-07T03:40:16.415614Z",
+     "shell.execute_reply": "2026-07-07T03:40:16.413915Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "int nBins = 200;\n",
+    "double rangeMin = 0.0;\n",
+    "double rangeMax = 10.0;\n",
+    "TH1D h1d(\"h1d\", \"Test random numbers\", nBins, rangeMin, rangeMax);"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c7b1a015",
+   "metadata": {},
+   "source": [
+    "\"gaus\" is a predefined ROOT function. Here we are filling the histogram with\n",
+    "10000 values sampled from that distribution."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "15d01f93",
+   "metadata": {
+    "collapsed": false,
+    "execution": {
+     "iopub.execute_input": "2026-07-07T03:40:16.418546Z",
+     "iopub.status.busy": "2026-07-07T03:40:16.417726Z",
+     "iopub.status.idle": "2026-07-07T03:40:16.626218Z",
+     "shell.execute_reply": "2026-07-07T03:40:16.624371Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "h1d.FillRandom(\"gaus\", 10000);"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5fdf7f08",
+   "metadata": {},
+   "source": [
+    "Open a ROOT file and save the histogram"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "0f58f96d",
+   "metadata": {
+    "collapsed": false,
+    "execution": {
+     "iopub.execute_input": "2026-07-07T03:40:16.632262Z",
+     "iopub.status.busy": "2026-07-07T03:40:16.632110Z",
+     "iopub.status.idle": "2026-07-07T03:40:16.837868Z",
+     "shell.execute_reply": "2026-07-07T03:40:16.837271Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "auto myfile = std::unique_ptr<TFile>(TFile::Open(\"fillrandom.root\", \"RECREATE\"));\n",
+    "myfile->WriteObject(&h1d, h1d.GetName());"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a30305d4",
+   "metadata": {},
+   "source": [
+    "Draw all canvases "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "c06e78b4",
+   "metadata": {
+    "collapsed": false,
+    "execution": {
+     "iopub.execute_input": "2026-07-07T03:40:16.839864Z",
+     "iopub.status.busy": "2026-07-07T03:40:16.839724Z",
+     "iopub.status.idle": "2026-07-07T03:40:17.047666Z",
+     "shell.execute_reply": "2026-07-07T03:40:17.042525Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "gROOT->GetListOfCanvases()->Draw()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "ROOT C++",
+   "language": "c++",
+   "name": "root"
+  },
+  "language_info": {
+   "codemirror_mode": "text/x-c++src",
+   "file_extension": ".C",
+   "mimetype": " text/x-c++src",
+   "name": "c++"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
