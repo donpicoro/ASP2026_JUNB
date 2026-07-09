@@ -59,3 +59,11 @@ source ~/.venv/bin/activate
 ```
 
 then execute the `pip install` lines above
+
+#### Installing from the notebook
+
+`jupyter notebook`s are powerful that you could also use them directly to install packages. To do so, basically in a cell, inside the notebook, add the lines you would use on a terminal but prepend them with a `%`. For example like this
+
+```
+% pip install scipy ipywidget ipympl
+```
